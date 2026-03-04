@@ -1,0 +1,54 @@
+POST http://localhost:3001/api/reports
+Content-Type: application/json
+
+{
+  "locationId": "321-1232",
+	"propertyId": "53535-123",
+	"meterSerialNumber": "4224-123",
+	"address": "Testikatu 3, 00100 Toijala",
+	"postNumber": 20100,
+	"postLocation": "Toijala",
+	"reportType" : "UUSI PIENTUOTANTO",
+	"ownerInfo": {
+		"companyName": "Company Oy",
+		"yTunnus": "1234567-8",
+		"firstName": "John",
+		"lastName": "Doe",
+		"email": "john.doe@example.com",
+		"phone": "123-456-7890" 
+	},
+	"contactPerson": {
+		"firstName": "Jack",
+		"lastName": "Bauer",
+		"email": "jack.bauer@example.com",
+		"phone": "123-456-7890"
+	},
+	"contractor": {
+		"companyName": "Company Oy",
+		"tukesNumber": "15563-636",
+		"firstName": "Steven",
+		"lastName": "Doe",
+		"email": "steven.doe@example.com",
+		"phone": "123-456-7890"
+	},
+	"devices": [
+		{
+			"productionType": "AURINKOVOIMA",
+			"currentProductionPower": 4,
+			"inverterName": "Inverter 4",
+			"inverterModel": "Model B",
+			"inverterStructure": "HYBRIDI-INVERTTERI",
+			"inverterACPower": 4,
+			"hardwareConnection": "Kolmivaiheinen", 
+			"faultCurrent": 10,
+			"shortCircuitCurrent": 20
+		}
+	],
+	"productionHardwareMeetsStandards": true,
+	"locationHasIsolationSwitch": true,
+	"isolationSwitchLocation": "Takaosassa, jossain siellä",
+	"locationHasWarningSigns": true,
+	"locationHasInterfaceProtection": true,
+	"interfaceProtectionLocation": "Pitäis näkyä selvästi, mutta ei näy",
+	"reactivePowerConpensation": true
+}
