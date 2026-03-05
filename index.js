@@ -1,7 +1,11 @@
+require('dotenv').config();
+
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
 const app = express()
+
+const { db } = require('./firebaseAdmin')
 
 app.use(cors())
 app.use(express.json())
@@ -44,195 +48,90 @@ app.use((req, res, next) => {
   }
 })
 
-  /* 
-  {
-    locationId: string,
-    propertyId: string,
-    meterSerialNumber: string,
-    address: string,
-    postNumber", int,
-    postLocation", string,
-    reportType" : string,
-    // UUSI PIENTUOTANTO / MUUTOSILMOITUS
-    reportDate: string, // (ISO 8601 format),
-    ownerInfo: {
-      companyName: string,
-      yTunnus: string,
-      firstName: string,
-      lastName: string,
-      email: string,
-      phone: string
-    },
-    contactPerson: {
-      firstName: string,
-      lastName: string,
-      email: string,
-      phone: string
-    },
-    contractor: {
-      companyName: string,
-      tukesNumber: string,
-      // sisältääkö numero esim väliviivoja 15563-636
-      firstName: string,
-      lastName: string,
-      email: string,
-      phone: string
-    },
-    devices: [
-      {
-        productionType: string,
-        // AURINKOVOIMA / DIESELVOIMA / TUULIVOIMA/ ENERGIAVARASTO
-        currentProductionPower: int,
-        inverterName: string,
-        inverterModel: string,
-        inverterStructure: string,
-        // HYBRIDI-INVERTTERI / ERILLISET INVERTTERIT
-        inverterACPower: int,
-        hardwareConnection: string, 
-        // Kolmivaiheinen / L1 / L2 / L3
-        faultCurrent: int,
-        shortCircuitCurrent: int
-      }
-    ],
-    productionHardwareMeetsStandards: boolean,
-    locationHasIsolationSwitch: boolean,
-    isolationSwitchLocation: string,
-    locationHasWarningSigns: boolean,
-    locationHasInterfaceProtection: boolean,
-    interfaceProtectionLocation: string,
-    reactivePowerConpensation: boolean
-   }
-  */
+// GET all reports
+app.get('/api/reports', async (request, response) => {
+  try {
+    const reportsRef = db.ref('reports') // Reference to the 'reports' node in your database
+    const snapshot = await reportsRef.once('value') // Get a snapshot of all data under 'reports'
+    const reportsData = snapshot.val() // Get the data as a JavaScript object
 
-let reports = [
-  {
-    id: 1,
-    locationId: "123-1232",
-    propertyId: "21415-123",
-    meterSerialNumber: "151515-123",
-    address: "Testikatu 1, 00100 Helsinki",
-    postNumber: 10100,
-    postLocation: "Helsinki",
-    reportType : "UUSI PIENTUOTANTO",
-    
-    reportDate: "2023-10-10T00:00:00Z",
-    ownerInfo: {
-      companyName: "",
-      yTunnus: "",
-      firstName: "John",
-      lastName: "Doe",
-      email: "john.doe@example.com",
-      phone: "123-456-7890"
-    },
-    contactPerson: {
-      firstName: "Jack",
-      lastName: "Bauer",
-      email: "jack.bauer@example.com",
-      phone: "123-456-7890"
-    },
-    contractor: {
-      companyName: "Company Oy",
-      tukesNumber: "15563-636",
-      firstName: "Steven",
-      lastName: "Doe",
-      email: "steven.doe@example.com",
-      phone: "123-456-7890"
-    },
-    devices: [
-      {
-        productionType: "AURINKOVOIMA",
-        currentProductionPower: 4,
-        inverterName: "Inverter 1",
-        inverterModel: "Model A",
-        inverterStructure: "HYBRIDI-INVERTTERI",
-        inverterACPower: 4,
-        hardwareConnection: "Kolmivaiheinen",
-        faultCurrent: 10,
-        shortCircuitCurrent: 20
-      },
-      {
-        productionType: "ENERGIAVARASTO",
-        currentProductionPower: 4,
-        inverterName: "Inverter 2",
-        inverterModel: "Model B",
-        inverterStructure: "ERILLISET INVERTTERIT",
-    
-        inverterACPower: 4,
-        hardwareConnection: "L2",
-        faultCurrent: 10,
-        shortCircuitCurrent: 20
-      }
-    ],
-    productionHardwareMeetsStandards: true,
-    locationHasIsolationSwitch: true,
-    isolationSwitchLocation: "In the back - look for the red switch",
-    locationHasWarningSigns: true,
-    locationHasInterfaceProtection: true,
-    interfaceProtectionLocation: "In the front - look for the blue box",
-    reactivePowerConpensation: true
-  }
-]
-
-app.get('/', (request, response) => {
-  response.send('<h1>Hello World!</h1>')
-})
-
-app.get('/api/reports', (request, response) => {
-  response.json(reports)
-})
-
-app.get('/api/reports/:id', (request, response) => {
-  const id = request.params.id
-  const report = reports.find(report => report.id === id)
-
-  if (report) {
-    response.json(report)
-  } else {
-    response.status(404).end()
+    if (reportsData) {
+      // Firebase returns an object of objects, so convert it to an array
+      const reportsArray = Object.keys(reportsData).map(key => ({
+        id: key, // Use the Firebase-generated key as the report ID
+        ...reportsData[key]
+      }))
+      response.json(reportsArray)
+    } else {
+      response.json([]) // Return an empty array if no reports exist
+    }
+  } catch (error) {
+    console.error('Error fetching reports:', error)
+    response.status(500).json({ error: 'Failed to retrieve reports.' })
   }
 })
 
-const generateId = () => {
-  const maxId = reports.length > 0
-    ? Math.max(...reports.map(r => Number(r.id)))
-    : 0
-  return String(maxId + 1)
-}
 
-app.post('/api/reports', (request, response) => {
+// GET a single report by ID
+app.get('/api/reports/:id', async (request, response) => {
+  try {
+    const id = request.params.id
+    const reportRef = db.ref('reports/' + id) // Reference to a specific report by its Firebase ID
+    const snapshot = await reportRef.once('value')
+    const reportData = snapshot.val()
+    if (reportData) {
+      response.json({ id: id, ...reportData }) // Include the ID in the response
+    } else {
+      response.status(404).json({ error: 'Report not found.' })
+    }
+  } catch (error) {
+    console.error('Error fetching report by ID:', error)
+    response.status(500).json({ error: 'Failed to retrieve report.' })
+  }
+})
+
+
+// POST a new report
+app.post('/api/reports', async (request, response) => {
   const body = request.body
+  // Basic validation (you should add more robust validation)
+  if (!body.locationId || !body.propertyId || !body.meterSerialNumber) {
+    return response.status(400).json({
+      error: 'Missing required fields: locationId, propertyId, or meterSerialNumber'
+    })
+  }
 
-  const report = {
-    id: generateId(),
+  // Create the report object as before, but Firebase will generate the ID
+  const newReportData = {
     locationId: body.locationId,
     propertyId: body.propertyId,
     meterSerialNumber: body.meterSerialNumber,
     address: body.address,
     postNumber: body.postNumber,
     postLocation: body.postLocation,
-    reportType : body.reportType,
-    reportDate: new Date(),
+    reportType: body.reportType,
+    reportDate: new Date().toISOString(),
     ownerInfo: {
-      companyName: body.ownerInfo.companyName,
-      yTunnus: body.ownerInfo.yTunnus,
-      firstName: body.ownerInfo.firstName,
-      lastName: body.ownerInfo.lastName,
-      email: body.ownerInfo.email,
-      phone: body.ownerInfo.phone
+      companyName: body.ownerInfo?.companyName,
+      yTunnus: body.ownerInfo?.yTunnus,
+      firstName: body.ownerInfo?.firstName,
+      lastName: body.ownerInfo?.lastName,
+      email: body.ownerInfo?.email,
+      phone: body.ownerInfo?.phone
     },
     contactPerson: {
-      firstName: body.contactPerson.firstName,
-      lastName: body.contactPerson.lastName,
-      email: body.contactPerson.email,
-      phone: body.contactPerson.phone
+      firstName: body.contactPerson?.firstName,
+      lastName: body.contactPerson?.lastName,
+      email: body.contactPerson?.email,
+      phone: body.contactPerson?.phone
     },
     contractor: {
-      companyName: body.contractor.companyName,
-      tukesNumber: body.contractor.tukesNumber,
-      firstName: body.contractor.firstName,
-      lastName: body.contractor.lastName,
-      email: body.contractor.email,
-      phone: body.contractor.phone
+      companyName: body.contractor?.companyName,
+      tukesNumber: body.contractor?.tukesNumber,
+      firstName: body.contractor?.firstName,
+      lastName: body.contractor?.lastName,
+      email: body.contractor?.email,
+      phone: body.contractor?.phone
     },
     devices: body.devices,
     productionHardwareMeetsStandards: body.productionHardwareMeetsStandards,
@@ -241,19 +140,37 @@ app.post('/api/reports', (request, response) => {
     locationHasWarningSigns: body.locationHasWarningSigns,
     locationHasInterfaceProtection: body.locationHasInterfaceProtection,
     interfaceProtectionLocation: body.interfaceProtectionLocation,
-    reactivePowerConpensation: body.reactivePowerConpensation,     
+    reactivePowerConpensation: body.reactivePowerConpensation,
   }
 
-  reports = reports.concat(report)
+  try {
+    const reportsRef = db.ref('reports')
+    const newReportRef = reportsRef.push(newReportData) // Push creates a new child node with a unique ID
+    const newReportId = newReportRef.key // Get the Firebase-generated ID
+    response.status(201).json({ id: newReportId, ...newReportData }) // Respond with the new report including its ID
+  } catch (error) {
+    console.error('Error creating new report:', error)
+    response.status(500).json({ error: 'Failed to create report.' })
 
-  response.json(report)
+  }
 })
 
-app.delete('/api/reports/:id', (request, response) => {
-  const id = request.params.id
-  reports = reports.filter(report => report.id !== id)
-
-  response.status(204).end()
+// DELETE a report
+app.delete('/api/reports/:id', async (request, response) => {
+  try {
+    const id = request.params.id
+    const reportRef = db.ref('reports/' + id)
+    // Check if the report exists before trying to delete
+    const snapshot = await reportRef.once('value')
+    if (!snapshot.exists()) {
+      return response.status(404).json({ error: 'Report not found.' })
+    }
+    await reportRef.remove() // Remove the specific report
+    response.status(204).end() // 204 No Content for successful deletion
+  } catch (error) {
+    console.error('Error deleting report:', error)
+    response.status(500).json({ error: 'Failed to delete report.' })
+  }
 })
 
 app.use(unknownEndpoint)

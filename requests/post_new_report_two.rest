@@ -1,0 +1,65 @@
+POST http://localhost:3001/api/reports
+Content-Type: application/json
+
+  {
+    "locationId": "123-1232",
+    "propertyId": "21415-123",
+    "meterSerialNumber": "151515-123",
+    "address": "Testikatu 6",
+    "postNumber": 10100,
+    "postLocation": "Helsinki",
+    "reportType" : "UUSI PIENTUOTANTO",
+    "ownerInfo": {
+      "companyName": "",
+      "yTunnus": "",
+      "firstName": "John",
+      "lastName": "Doe",
+      "email": "john.doe@example.com",
+      "phone": "123-456-7890"
+    },
+    "contactPerson": {
+      "firstName": "Jack",
+      "lastName": "Bauer",
+      "email": "jack.bauer@example.com",
+      "phone": "123-456-7890"
+    },
+    "contractor": {
+      "companyName": "Company Oy",
+      "tukesNumber": "15563-636",
+      "firstName": "Steven",
+      "lastName": "Doe",
+      "email": "steven.doe@example.com",
+      "phone": "123-456-7890"
+    },
+    "devices": [
+      {
+        "productionType": "AURINKOVOIMA",
+        "currentProductionPower": 4,
+        "inverterName": "Inverter 1",
+        "inverterModel": "Model A",
+        "inverterStructure": "HYBRIDI-INVERTTERI",
+        "inverterACPower": 4,
+        "hardwareConnection": "Kolmivaiheinen",
+        "faultCurrent": 10,
+        "shortCircuitCurrent": 20
+      },
+      {
+        "productionType": "ENERGIAVARASTO",
+        "currentProductionPower": 4,
+        "inverterName": "Inverter 2",
+        "inverterModel": "Model B",
+        "inverterStructure": "ERILLISET INVERTTERIT",
+        "inverterACPower": 4,
+        "hardwareConnection": "L2",
+        "faultCurrent": 10,
+        "shortCircuitCurrent": 20
+      }
+    ],
+    "productionHardwareMeetsStandards": true,
+    "locationHasIsolationSwitch": true,
+    "isolationSwitchLocation": "In the back - look for the red switch",
+    "locationHasWarningSigns": true,
+    "locationHasInterfaceProtection": true,
+    "interfaceProtectionLocation": "In the front - look for the blue box",
+    "reactivePowerConpensation": true
+  }

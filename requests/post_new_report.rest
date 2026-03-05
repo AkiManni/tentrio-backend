@@ -5,7 +5,7 @@ Content-Type: application/json
   "locationId": "321-1232",
 	"propertyId": "53535-123",
 	"meterSerialNumber": "4224-123",
-	"address": "Testikatu 3, 00100 Toijala",
+	"address": "Testikatu 3",
 	"postNumber": 20100,
 	"postLocation": "Toijala",
 	"reportType" : "UUSI PIENTUOTANTO",

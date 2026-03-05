@@ -5,14 +5,19 @@
   "scripts": {
     "start": "node index.js",
     "dev": "node --watch index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:ui": "@powershell -Command \"if (Test-Path .\\dist) { Remove-Item -Recurse -Force .\\dist } ; cd ../tentrio-projekti ; npm run build ; Copy-Item .\\dist -Recurse ../tentrio-backend/\"",
+    "deploy:full": "npm run build:ui && cd ../tentrio-backend && git add . && git commit -m 'ui build' && git push"
   },
   "author": "AkiManni",
   "license": "ISC",
   "description": "",
   "dependencies": {
     "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
     "express": "^5.2.1",
+    "firebase": "^12.10.0",
+    "firebase-admin": "^13.7.0",
     "morgan": "^1.10.1"
   }
 }
