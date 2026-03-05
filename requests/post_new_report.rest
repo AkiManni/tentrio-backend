@@ -34,16 +34,18 @@ Content-Type: application/json
 	"devices": [
 		{
 			"productionType": "AURINKOVOIMA",
-			"currentProductionPower": 4,
+			"currentPowerProduction": 4,
 			"inverterName": "Inverter 4",
 			"inverterModel": "Model B",
 			"inverterStructure": "HYBRIDI-INVERTTERI",
 			"inverterACPower": 4,
-			"hardwareConnection": "Kolmivaiheinen", 
+			"hardwareConnection": "KOLMIVAIHEINEN", 
 			"faultCurrent": 10,
 			"shortCircuitCurrent": 20
 		}
 	],
+	"currentPowerProductionTotal": 4,
+  "productionDifferenceToLastSetup": 4,
 	"productionHardwareMeetsStandards": true,
 	"locationHasIsolationSwitch": true,
 	"isolationSwitchLocation": "Takaosassa, jossain siellä",

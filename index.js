@@ -134,6 +134,8 @@ app.post('/api/reports', async (request, response) => {
       phone: body.contractor?.phone
     },
     devices: body.devices,
+    currentPowerProductionTotal: body.currentPowerProductionTotal,
+    productionDifferenceToLastSetup: body.productionDifferenceToLastSetup,
     productionHardwareMeetsStandards: body.productionHardwareMeetsStandards,
     locationHasIsolationSwitch: body.locationHasIsolationSwitch,
     isolationSwitchLocation: body.isolationSwitchLocation,

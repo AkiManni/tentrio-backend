@@ -1,14 +1,14 @@
 POST http://localhost:3001/api/reports
 Content-Type: application/json
 
-  {
+    {
     "locationId": "123-1232",
     "propertyId": "21415-123",
     "meterSerialNumber": "151515-123",
-    "address": "Testikatu 6",
-    "postNumber": 10100,
-    "postLocation": "Helsinki",
-    "reportType" : "UUSI PIENTUOTANTO",
+    "address": "Katutie 6",
+    "postNumber": 90100,
+    "postLocation": "Oulu",
+    "reportType" : "MUUTOSILMOITUS",
     "ownerInfo": {
       "companyName": "",
       "yTunnus": "",
@@ -34,18 +34,29 @@ Content-Type: application/json
     "devices": [
       {
         "productionType": "AURINKOVOIMA",
-        "currentProductionPower": 4,
+        "currentPowerProduction": 4,
         "inverterName": "Inverter 1",
         "inverterModel": "Model A",
         "inverterStructure": "HYBRIDI-INVERTTERI",
         "inverterACPower": 4,
-        "hardwareConnection": "Kolmivaiheinen",
+        "hardwareConnection": "KOLMIVAIHEINEN",
+        "faultCurrent": 10,
+        "shortCircuitCurrent": 20
+      },
+      {
+        "productionType": "DIESELVOIMA",
+        "currentPowerProduction": 6,
+        "inverterName": "Inverter 3",
+        "inverterModel": "Model A",
+        "inverterStructure": "ERILLISET INVERTTERIT",
+        "inverterACPower": 6,
+        "hardwareConnection": "L1",
         "faultCurrent": 10,
         "shortCircuitCurrent": 20
       },
       {
         "productionType": "ENERGIAVARASTO",
-        "currentProductionPower": 4,
+        "currentPowerProduction": 4,
         "inverterName": "Inverter 2",
         "inverterModel": "Model B",
         "inverterStructure": "ERILLISET INVERTTERIT",
@@ -55,11 +66,13 @@ Content-Type: application/json
         "shortCircuitCurrent": 20
       }
     ],
+    "currentPowerProductionTotal": 14,
+    "productionDifferenceToLastSetup": 6,
     "productionHardwareMeetsStandards": true,
     "locationHasIsolationSwitch": true,
-    "isolationSwitchLocation": "In the back - look for the red switch",
+    "isolationSwitchLocation": "Takaosassa - punainen kytkin sulakekaapissa",
     "locationHasWarningSigns": true,
     "locationHasInterfaceProtection": true,
-    "interfaceProtectionLocation": "In the front - look for the blue box",
+    "interfaceProtectionLocation": "Etuosassa - kytkinkaappi sinisellä suojanauhalla",
     "reactivePowerConpensation": true
   }
