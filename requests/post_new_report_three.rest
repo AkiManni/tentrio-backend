@@ -1,0 +1,71 @@
+POST http://localhost:3001/api/reports
+Content-Type: application/json
+
+    {
+    "consumptionSiteCode": "444-5212",
+    "propertyCode": "66363-312",
+    "meterSerialNumber": "646265-142",
+    "address": "Ruiskukkatie 5",
+    "postNumber": 90300,
+    "postLocation": "Oulu",
+    "reportType" : "Muutosilmoitus",
+    "isCompany": false,
+    "ownerInfo": {
+      "companyName": "",
+      "yTunnus": "",
+      "firstName": "Leif",
+      "lastName": "Huijanen",
+      "email": "leif.huijanen@sahkoposti.com",
+      "phone": "0446549872"
+    },
+    "hasContactPerson": false,
+    "contactPerson": {
+      "contactPersonFirstName": "",
+      "contactPersonLastName": "",
+      "contactPersonEmail": "",
+      "contactPersonPhone": ""
+    },
+    "contractor": {
+      "contractorCompanyName": "Rakennusurakka Oy",
+      "contractorTukesNumber": "6464-244",
+      "contractorFirstName": "Bob",
+      "contractorLastName": "Rakentaja",
+      "contractorEmail": "bob.builder@rakennusurakkaoy.com",
+      "contractorPhone": "092746736"
+    },
+    "devices": [
+      {
+        "productionType": "TUULIVOIMA",
+        "powerProduction": 11,
+        "inverterName": "Inverter D",
+        "inverterModel": "Malli 1.3",
+        "inverterStructure": "ERILLISET-INVERTERIT",
+        "inverterACPower": 16,
+        "hardwareConnection": "L1",
+        "faultCurrent": 14,
+        "shortCircuitCurrent": 16
+      },
+      {
+        "productionType": "ENERGIAVARASTO",
+        "powerProduction": 2,
+        "inverterName": "Inverter Å",
+        "inverterModel": "Modeli 3",
+        "inverterStructure": "ERILLISET INVERTTERIT",
+        "inverterACPower": 4,
+        "hardwareConnection": "L2",
+        "faultCurrent": 6,
+        "shortCircuitCurrent": 6
+      }
+    ],
+    "productionTotal": 13,
+    "currentProductionTotal": 13,
+    "oldProductionTotal": 0,
+    "productionDifference": 0, 
+    "productionHardwareMeetsStandards": true,
+    "locationHasIsolationSwitch": true,
+    "isolationSwitchLocation": "Porstuan takaosassa - punainen kytkin sulakekaapissa",
+    "locationHasWarningSigns": true,
+    "locationHasInterfaceProtection": false,
+    "interfaceProtectionLocation": "",
+    "reactivePowerCompensation": false
+  }

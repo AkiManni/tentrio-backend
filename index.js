@@ -95,22 +95,24 @@ app.get('/api/reports/:id', async (request, response) => {
 app.post('/api/reports', async (request, response) => {
   const body = request.body
   // Basic validation (you should add more robust validation)
-  if (!body.locationId || !body.propertyId || !body.meterSerialNumber) {
+  if (!body.consumptionSiteCode || !body.propertyCode || !body.meterSerialNumber) {
     return response.status(400).json({
-      error: 'Missing required fields: locationId, propertyId, or meterSerialNumber'
+      error: 'Missing required fields: consumptionSiteCode, propertyCode, or meterSerialNumber'
     })
   }
 
   // Create the report object as before, but Firebase will generate the ID
   const newReportData = {
-    locationId: body.locationId,
-    propertyId: body.propertyId,
+    consumptionSiteCode: body.consumptionSiteCode,
+    propertyCode: body.propertyCode,
     meterSerialNumber: body.meterSerialNumber,
     address: body.address,
     postNumber: body.postNumber,
     postLocation: body.postLocation,
     reportType: body.reportType,
     reportDate: new Date().toISOString(),
+    isCompany: body.isCompany,
+	
     ownerInfo: {
       companyName: body.ownerInfo?.companyName,
       yTunnus: body.ownerInfo?.yTunnus,
@@ -119,30 +121,33 @@ app.post('/api/reports', async (request, response) => {
       email: body.ownerInfo?.email,
       phone: body.ownerInfo?.phone
     },
+    hasContactPerson: body.hasContactPerson,
     contactPerson: {
-      firstName: body.contactPerson?.firstName,
-      lastName: body.contactPerson?.lastName,
-      email: body.contactPerson?.email,
-      phone: body.contactPerson?.phone
+      contactPersonFirstName: body.contactPerson?.contactPersonFirstName,
+      contactPersonLastName: body.contactPerson?.contactPersonLastName,
+      contactPersonEmail: body.contactPerson?.contactPersonEmail,
+      contactPersonPhone: body.contactPerson?.contactPersonPhone
     },
     contractor: {
-      companyName: body.contractor?.companyName,
-      tukesNumber: body.contractor?.tukesNumber,
-      firstName: body.contractor?.firstName,
-      lastName: body.contractor?.lastName,
-      email: body.contractor?.email,
-      phone: body.contractor?.phone
+      contractorCompanyName: body.contractor?.contractorCompanyName,
+      contractorTukesNumber: body.contractor?.contractorTukesNumber,
+      contractorFirstName: body.contractor?.contractorFirstName,
+      contractorLastName: body.contractor?.contractorLastName,
+      contractorEmail: body.contractor?.contractorEmail,
+      contractorPhone: body.contractor?.contractorPhone
     },
     devices: body.devices,
-    currentPowerProductionTotal: body.currentPowerProductionTotal,
-    productionDifferenceToLastSetup: body.productionDifferenceToLastSetup,
+    productionTotal: body.productionTotal,
+    currentProductionTotal: body.currentProductionTotal,
+    oldProductionTotal: body.oldProductionTotal,
+    productionDifference: body.productionDifference, 
     productionHardwareMeetsStandards: body.productionHardwareMeetsStandards,
     locationHasIsolationSwitch: body.locationHasIsolationSwitch,
     isolationSwitchLocation: body.isolationSwitchLocation,
     locationHasWarningSigns: body.locationHasWarningSigns,
     locationHasInterfaceProtection: body.locationHasInterfaceProtection,
     interfaceProtectionLocation: body.interfaceProtectionLocation,
-    reactivePowerConpensation: body.reactivePowerConpensation,
+    reactivePowerCompensation: body.reactivePowerCompensation,
   }
 
   try {

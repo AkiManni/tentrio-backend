@@ -2,39 +2,41 @@ POST http://localhost:3001/api/reports
 Content-Type: application/json
 
     {
-    "locationId": "123-1232",
-    "propertyId": "21415-123",
+    "consumptionSiteCode": "123-1232",
+    "propertyCode": "21415-123",
     "meterSerialNumber": "151515-123",
-    "address": "Katutie 6",
+    "address": "Rommakkokatu 2",
     "postNumber": 90100,
     "postLocation": "Oulu",
-    "reportType" : "MUUTOSILMOITUS",
+    "reportType" : "Muutosilmoitus",
+    "isCompany": false,
     "ownerInfo": {
       "companyName": "",
       "yTunnus": "",
-      "firstName": "John",
-      "lastName": "Doe",
-      "email": "john.doe@example.com",
-      "phone": "123-456-7890"
+      "firstName": "Poppa",
+      "lastName": "Maijanen",
+      "email": "poppa.maijanen@example.com",
+      "phone": "0504567890"
     },
+    "hasContactPerson": true,
     "contactPerson": {
-      "firstName": "Jack",
-      "lastName": "Bauer",
-      "email": "jack.bauer@example.com",
-      "phone": "123-456-7890"
+      "contactPersonFirstName": "Steve",
+      "contactPersonLastName": "Austin",
+      "contactPersonEmail": "steve.austin@wwe.com",
+      "contactPersonPhone": "987655422"
     },
     "contractor": {
-      "companyName": "Company Oy",
-      "tukesNumber": "15563-636",
-      "firstName": "Steven",
-      "lastName": "Doe",
-      "email": "steven.doe@example.com",
-      "phone": "123-456-7890"
+      "contractorCompanyName": "Asuntomarkkina Oy",
+      "contractorTukesNumber": "15563-636",
+      "contractorFirstName": "Remontti",
+      "contractorLastName": "Reiska",
+      "contractorEmail": "remontti.reiska@asuntomarkkinat.com",
+      "contractorPhone": "1234567890"
     },
     "devices": [
       {
         "productionType": "AURINKOVOIMA",
-        "currentPowerProduction": 4,
+        "powerProduction": 4,
         "inverterName": "Inverter 1",
         "inverterModel": "Model A",
         "inverterStructure": "HYBRIDI-INVERTTERI",
@@ -45,7 +47,7 @@ Content-Type: application/json
       },
       {
         "productionType": "DIESELVOIMA",
-        "currentPowerProduction": 6,
+        "powerProduction": 6,
         "inverterName": "Inverter 3",
         "inverterModel": "Model A",
         "inverterStructure": "ERILLISET INVERTTERIT",
@@ -56,7 +58,7 @@ Content-Type: application/json
       },
       {
         "productionType": "ENERGIAVARASTO",
-        "currentPowerProduction": 4,
+        "powerProduction": 4,
         "inverterName": "Inverter 2",
         "inverterModel": "Model B",
         "inverterStructure": "ERILLISET INVERTTERIT",
@@ -66,13 +68,15 @@ Content-Type: application/json
         "shortCircuitCurrent": 20
       }
     ],
-    "currentPowerProductionTotal": 14,
-    "productionDifferenceToLastSetup": 6,
+    "productionTotal": 14,
+    "currentProductionTotal": 14,
+    "oldProductionTotal": 20,
+    "productionDifference": 0, 
     "productionHardwareMeetsStandards": true,
     "locationHasIsolationSwitch": true,
-    "isolationSwitchLocation": "Takaosassa - punainen kytkin sulakekaapissa",
+    "isolationSwitchLocation": "Porstuan takaosassa - punainen kytkin sulakekaapissa",
     "locationHasWarningSigns": true,
     "locationHasInterfaceProtection": true,
-    "interfaceProtectionLocation": "Etuosassa - kytkinkaappi sinisellä suojanauhalla",
-    "reactivePowerConpensation": true
+    "interfaceProtectionLocation": "Porstuan etuosassa - kytkinkaappi sinisellä suojanauhalla",
+    "reactivePowerCompensation": true
   }

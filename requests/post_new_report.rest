@@ -2,13 +2,14 @@ POST http://localhost:3001/api/reports
 Content-Type: application/json
 
 {
-  "locationId": "321-1232",
-	"propertyId": "53535-123",
+  "consumptionSiteCode": "321-1232",
+	"propertyCode": "53535-123",
 	"meterSerialNumber": "4224-123",
 	"address": "Testikatu 3",
 	"postNumber": 20100,
 	"postLocation": "Toijala",
-	"reportType" : "UUSI PIENTUOTANTO",
+	"reportType" : "Uusi pientuotanto",
+	"isCompany": true,
 	"ownerInfo": {
 		"companyName": "Company Oy",
 		"yTunnus": "1234567-8",
@@ -17,24 +18,25 @@ Content-Type: application/json
 		"email": "john.doe@example.com",
 		"phone": "123-456-7890" 
 	},
+	"hasContactPerson": true,
 	"contactPerson": {
-		"firstName": "Jack",
-		"lastName": "Bauer",
-		"email": "jack.bauer@example.com",
-		"phone": "123-456-7890"
+		"contactPersonFirstName": "Jack",
+		"contactPersonLastName": "Bauer",
+		"contactPersonEmail": "jack.bauer@example.com",
+		"contactPersonPhone": "123-456-7890"
 	},
 	"contractor": {
-		"companyName": "Company Oy",
-		"tukesNumber": "15563-636",
-		"firstName": "Steven",
-		"lastName": "Doe",
-		"email": "steven.doe@example.com",
-		"phone": "123-456-7890"
+		"contractorCompanyName": "Company Oy",
+		"contractorTukesNumber": "15563-636",
+		"contractorFirstName": "Steven",
+		"contractorLastName": "Doe",
+		"contractorEmail": "steven.doe@example.com",
+		"contractorPhone": "123-456-7890"
 	},
 	"devices": [
 		{
 			"productionType": "AURINKOVOIMA",
-			"currentPowerProduction": 4,
+			"powerProduction": 4,
 			"inverterName": "Inverter 4",
 			"inverterModel": "Model B",
 			"inverterStructure": "HYBRIDI-INVERTTERI",
@@ -44,13 +46,15 @@ Content-Type: application/json
 			"shortCircuitCurrent": 20
 		}
 	],
-	"currentPowerProductionTotal": 4,
-  "productionDifferenceToLastSetup": 4,
+	"productionTotal": 4,
+  "currentProductionTotal": 4,
+  "oldProductionTotal": 0,
+  "productionDifference": 0, 
 	"productionHardwareMeetsStandards": true,
 	"locationHasIsolationSwitch": true,
 	"isolationSwitchLocation": "Takaosassa, jossain siellä",
 	"locationHasWarningSigns": true,
 	"locationHasInterfaceProtection": true,
 	"interfaceProtectionLocation": "Pitäis näkyä selvästi, mutta ei näy",
-	"reactivePowerConpensation": true
+	"reactivePowerCompensation": true
 }
